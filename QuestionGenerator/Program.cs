@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace QuestionGenerator
 {
@@ -10,6 +11,10 @@ namespace QuestionGenerator
 
     private static void Main(string[] args)
     {
+      //Input validation, error handling is ignored for now.      
+      var questionCount = Convert.ToInt32(args[0]);
+      Console.WriteLine("Generating {0} questions...", questionCount);
+
     }
 
     public static void Populate()
