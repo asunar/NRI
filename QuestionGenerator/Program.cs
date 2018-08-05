@@ -1,27 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace QuestionGenerator
 {
   internal class Program
   {
-    private static List<Strand> strands;
-    private static List<Standard> standards;
-    private static List<Question> questions;
 
     private static void Main(string[] args)
     {
       //Input validation, error handling is ignored for now.      
       var questionCount = Convert.ToInt32(args[0]);
       Console.WriteLine("Generating {0} questions...", questionCount);
+      var strands = Populate();
+      var questions = GenerateQuestions(questionCount, strands);
 
+      var result = String.Join(",", questions.Select(x => x.ID));
+
+      Console.WriteLine(result);
+      Console.ReadLine();
     }
 
-    public static void Populate()
+    private static List<Question> GenerateQuestions(int questionCount, List<Strand> strands)
+    {
+      var questions = new List<Question>();
+      //First, try to put the same number of questions from each strand into the quiz.
+      for (var i = 0; i < questionCount; i++)
+      {
+        var currentStrand = i % 2 == 0 ? strands[0] : strands[1]; // Refactor to improve strand selection     
+        var selectedQuestion = currentStrand.Standards.First().Questions.First();
+        questions.Add(selectedQuestion);
+
+
+      }
+
+      return questions;
+    }
+
+    public static List<Strand> Populate()
     {
       //Will load the data from csv files using a library like FileHelpers eventually.
 
-      strands = new List<Strand>
+      return new List<Strand>
       {
         new Strand
         {
